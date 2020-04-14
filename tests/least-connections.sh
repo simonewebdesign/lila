@@ -62,3 +62,5 @@ echo -n Expecting server a: # 4 4 3
 if [ "$(call)" == "Hello from server a" ]; then ok; else fail; fi
 
 kill $(lsof -t -i:4444 -sTCP:LISTEN)
+
+exit $exit_status

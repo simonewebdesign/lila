@@ -6,6 +6,7 @@ function ok {
 
 function fail {
     echo -e ' \033[31m✗\033[0m'
+    exit_status=1
 }
 
 function call {
@@ -22,3 +23,5 @@ for WORD; do
 done
 
 kill $(lsof -t -i:4444 -sTCP:LISTEN)
+
+exit $exit_status
