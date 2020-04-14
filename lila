@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+const net = require('net')
+const makeServer = require('./src/server')
+const rotateIndex = require('./src/modes/round-robin')
+const acquireLeastConnectedServer = require('./src/modes/least-connections')
+
+numberOfServers = parseInt(process.argv[2]) || 7
+
+const mode = process.argv[3] || 'round-robin'
+const applyMode =
+  mode === 'round-robin'
+    ? rotateIndex
+    : () => setInterval(acquireLeastConnectedServer, 200)
+
+const serverNames = Array.from({ length: numberOfServers }, (_, index) =>
+  String.fromCharCode('a'.charCodeAt(0) + index)
+)
+
+servers = serverNames.map((name, index) =>
+  makeServer(name, 8000 + index)
+)
+
+serverIndex = 0
+serverConnections = new Float32Array(numberOfServers)
+
+net
+  .createServer((conn) => {
+    console.log('client connected')
+
+    conn.on('end', () => {
+      console.log('client disconnected')
+    })
+
+    conn.on('error', (err) => {
+      console.error('lila error:', err)
+    })
+
+    const serverSocket = net.connect(8000 + serverIndex, '127.0.0.1', () => {
+      conn.pipe(serverSocket)
+      serverSocket.pipe(conn)
+    })
+
+    applyMode()
+  })
+  .listen(4444, () => {
+    console.log('lila bound on http://127.0.0.1:4444')
+  })
