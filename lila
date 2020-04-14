@@ -2,16 +2,12 @@
 
 const net = require('net')
 const makeServer = require('./src/server')
-const rotateIndex = require('./src/modes/round-robin')
-const acquireLeastConnectedServer = require('./src/modes/least-connections')
+const applyMode = require('./src/modes');
 
 numberOfServers = parseInt(process.argv[2]) || 7
 
-const mode = process.argv[3] || 'round-robin'
-const applyMode =
-  mode === 'round-robin'
-    ? rotateIndex
-    : () => setInterval(acquireLeastConnectedServer, 200)
+const modeArg = process.argv[3] || 'round-robin'
+const mode = applyMode(modeArg)
 
 const serverNames = Array.from({ length: numberOfServers }, (_, index) =>
   String.fromCharCode('a'.charCodeAt(0) + index)
@@ -41,7 +37,7 @@ net
       serverSocket.pipe(conn)
     })
 
-    applyMode()
+    mode()
   })
   .listen(4444, () => {
     console.log('lila bound on http://127.0.0.1:4444')
