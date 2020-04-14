@@ -1,6 +1,6 @@
 # lila 🌺
 
-[![Build Status](https://travis-ci.org/simonewebdesign/elm-new.svg?branch=master)](https://travis-ci.org/simonewebdesign/elm-new) [![Build Status](https://ci.appveyor.com/api/projects/status/5jqfyredn4l7rxtv?svg=true)](https://ci.appveyor.com/project/simone/elm-new)
+[![Build Status](https://api.travis-ci.org/simonewebdesign/lila.svg?branch=master)](https://travis-ci.org/simonewebdesign/lila)
 
 lila is a tiny (1kb) load balancer.
 
@@ -19,10 +19,11 @@ Node.js is the only prerequisite. Version v13.12+ is recommended, but it should 
 
 ### Notes
 
-lila will respect the Keep-Alive timeout by reusing the same socket, however it also depends on the client you're using.
+- The mode needs to be passed as a shell argument, e.g. `round-robin` or `least-connections`
+- On a HTTP server, lila will respect the Keep-Alive timeout by reusing the same socket, unless the client ends the connection
 
 
-## TODO
+#### TODO
 
 - [ ] one-liner installation script
 - [x] badges/shields
