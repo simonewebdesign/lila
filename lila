@@ -1,24 +1,60 @@
 #!/usr/bin/env node
-
 const net = require('net')
-const makeServer = require('./src/server')
-const applyMode = require('./src/modes')
+const http = require('http')
 
-numberOfServers = parseInt(process.argv[2]) || 7
-
-const modeArg = process.argv[3] || 'round-robin'
-const mode = applyMode(modeArg)
+const numberOfServers = parseInt(process.argv[2]) || 7
 
 const serverNames = Array.from({ length: numberOfServers }, (_, index) =>
   String.fromCharCode('a'.charCodeAt(0) + index)
 )
 
-servers = serverNames.map((name, index) =>
-  makeServer(name, 8000 + index)
+const servers = serverNames.map((name, index) =>
+  spawnServer(name, 8000 + index)
 )
 
-serverIndex = 0
-serverConnections = new Float32Array(numberOfServers)
+function spawnServer(name, port) {
+  return http
+    .createServer((req, res) => {
+      res.statusCode = 200
+      res.setHeader('Content-Type', 'text/plain')
+      res.end(`Hello from server ${name}`)
+    })
+    .listen(port, '127.0.0.1', () => {
+      console.log(`‘${name}’ running at http://127.0.0.1:${port}/`)
+    })
+    .on('connection', (req, clientSocket, head) => {
+      console.log(`‘${name}’ TCP stream established`)
+    })
+}
+
+let serverIndex = 0
+let serverConnections = new Float32Array(numberOfServers)
+
+const modeArg = process.argv[3] || 'round-robin'
+const applyMode =
+  modeArg === 'round-robin'
+    ? () => {
+      serverIndex >= numberOfServers - 1
+        ? serverIndex = 0
+        : serverIndex++
+    }
+    // least-connections
+    : () => {
+      setTimeout(() => {
+        servers.forEach((server, index) => {
+          server.getConnections((error, count) => {
+            if (error) {
+              console.error('lila getConnections error:', error)
+            } else {
+              serverConnections[index] = count
+            }
+          })
+        })
+        serverIndex = serverConnections.indexOf(
+          Math.min(...serverConnections)
+        )
+      }, 200)
+    }
 
 net
   .createServer((conn) => {
@@ -31,7 +67,7 @@ net
       serverSocket.pipe(conn)
     })
 
-    mode()
+    applyMode()
   })
   .listen(4444, () => {
     console.log('lila bound on http://127.0.0.1:4444')
