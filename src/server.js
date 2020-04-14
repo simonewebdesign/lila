@@ -3,7 +3,7 @@ const http = require('http')
 function makeServer(name, port) {
   return http
     .createServer((req, res) => {
-      res.statusCode = 200;
+      res.statusCode = 200
       res.setHeader('Content-Type', 'text/plain')
       res.end(`Hello from server ${name}`)
     })

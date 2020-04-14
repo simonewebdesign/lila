@@ -2,7 +2,7 @@
 
 const net = require('net')
 const makeServer = require('./src/server')
-const applyMode = require('./src/modes');
+const applyMode = require('./src/modes')
 
 numberOfServers = parseInt(process.argv[2]) || 7
 
