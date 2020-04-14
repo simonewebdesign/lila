@@ -22,12 +22,6 @@ serverConnections = new Float32Array(numberOfServers)
 
 net
   .createServer((conn) => {
-    console.log('client connected')
-
-    conn.on('end', () => {
-      console.log('client disconnected')
-    })
-
     conn.on('error', (err) => {
       console.error('lila error:', err)
     })
