@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const net = require('net')
-const http = require('http')
 
 const numberOfServers = 7; // TODO: fix this
 let serverIndex = 0
