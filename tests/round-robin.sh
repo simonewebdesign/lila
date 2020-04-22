@@ -13,7 +13,17 @@ function call {
     curl http://127.0.0.1:4444 --silent
 }
 
-./lila > /dev/null &
+tests/spawnServers.js > /dev/null &
+
+# TODO: make sure it works with non-sequential ports!
+./lila round-robin \
+    http://127.0.0.1:8000 \
+    http://127.0.0.1:8001 \
+    http://127.0.0.1:8002 \
+    http://127.0.0.1:8003 \
+    http://127.0.0.1:8004 \
+    http://127.0.0.1:8005 \
+    http://127.0.0.1:8006 > /dev/null &
 
 sleep 0.3
 
@@ -22,6 +32,6 @@ for WORD; do
     if [ "$(call)" == "Hello from server $WORD" ]; then ok; else fail; fi
 done
 
-kill $(lsof -t -i:4444 -sTCP:LISTEN)
+kill $(lsof -t -i:4444)
 
 exit $exit_status

@@ -1,11 +1,24 @@
 #!/usr/bin/env node
 const net = require('net')
+const serverArgs = process.argv.slice(3)
+// console.log('[DEBUG!!]process.argv:',process.argv, process.argv.slice(3))
+serverArgs.map(toURL)
 
-const numberOfServers = 7; // TODO: fix this
-let serverIndex = 0
+function toURL(str) {
+  // const s = str.trim()
+  try {
+    return new URL(str)
+  } catch (err) {
+    console.error(`lila error: Invalid URL: ${str}`)
+    process.exit(1)
+  }
+}
+
+const numberOfServers = serverArgs.length
 let serverConnections = new Float32Array(numberOfServers)
+let serverIndex = 0
 
-const modeArg = process.argv[3] || 'round-robin'
+const modeArg = process.argv[2] || 'round-robin'
 const applyMode =
   modeArg === 'round-robin'
     ? () => {
@@ -13,10 +26,10 @@ const applyMode =
         ? serverIndex = 0
         : serverIndex++
     }
-    // least-connections
-    : () => {
+    : () => { // least-connections
       setTimeout(() => {
-        servers.forEach((server, index) => {
+        serverArgs.forEach(({ host, port }, index) => {
+          const server = new net.Server({ })
           server.getConnections((error, count) => {
             if (error) {
               console.error('lila getConnections error:', error)
@@ -34,7 +47,7 @@ const applyMode =
 net
   .createServer((conn) => {
     conn.on('error', (err) => {
-      console.error('lila error:', err)
+      console.error('lila socket error:', err)
     })
 
     const serverSocket = net.connect(8000 + serverIndex, '127.0.0.1', () => {

@@ -13,6 +13,9 @@ function spawnServer(name, port) {
     .on('connection', (req, clientSocket, head) => {
       console.log(`‘${name}’ TCP stream established`)
     })
+    .on('error', err => {
+      console.error('TEST HTTP Server error:', err)
+    })
 }
 
-module.exports = spawnServer;
+module.exports = spawnServer
