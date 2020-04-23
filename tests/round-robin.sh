@@ -23,7 +23,7 @@ tests/spawnServers.js > /dev/null &
     http://127.0.0.1:8003 \
     http://127.0.0.1:8004 \
     http://127.0.0.1:8005 \
-    http://127.0.0.1:8006 > /dev/null &
+    http://127.0.0.1:8006 > DEBUGroundrobin &
 
 sleep 0.3
 
@@ -33,5 +33,7 @@ for WORD; do
 done
 
 kill $(lsof -t -i:4444)
+
+kill $(lsof -t -i:8000) # will kill spawnServers process
 
 exit $exit_status

@@ -6,6 +6,7 @@ function ok {
 
 function fail {
     echo -e ' \033[31m✗\033[0m'
+    exit_status=1
 }
 
 function call {
@@ -16,12 +17,12 @@ function connect {
     nc 127.0.0.1 4444 0<&0 1>out &
 }
 
-tests/spawnServers.js 3 > /dev/null &
+tests/spawnServers.js 3 > DEBUGspawnservers &
 
 ./lila least-connections \
     http://localhost:8000 \
     http://localhost:8001 \
-    http://localhost:8002 > /dev/null &
+    http://localhost:8002 > DEBUGlila &
 
 sleep 0.3
 
@@ -66,6 +67,8 @@ sleep 0.2
 echo -n Expecting server a: # 4 4 3
 if [ "$(call)" == "Hello from server a" ]; then ok; else fail; fi
 
-kill $(lsof -t -i:4444 -sTCP:LISTEN)
+kill $(lsof -t -i:4444)
+
+kill $(lsof -t -i:8000) # will kill spawnServers process
 
 exit $exit_status
