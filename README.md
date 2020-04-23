@@ -8,6 +8,12 @@ lila is a tiny (1kb) load balancer.
 
 Node.js is the only prerequisite. Version v13.12+ is recommended, but it should work on v0.9.7 and later versions.
 
+Run this command on your shell to download the latest lila on your current directory:
+
+    curl https://raw.githubusercontent.com/simonewebdesign/lila/master/lila > lila && chmod +x lila
+
+Optional: if you want to use lila without knowing its location, make sure to add the folder where you've downloaded it on the `$PATH` environment variable.
+
 ## Usage
 
     lila <mode> server1 server2 ... serverX
@@ -29,7 +35,7 @@ Example:
 
 #### TODO
 
-- [ ] one-liner installation script
+- [x] one-liner installation script
 - [x] badges/shields
 - [ ] manpage
 - [x] homebrew formula
