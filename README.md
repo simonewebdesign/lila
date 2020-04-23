@@ -12,6 +12,10 @@ Node.js is the only prerequisite. Version v13.12+ is recommended, but it should 
 
     lila <mode> server1 server2 ... serverX
 
+Example:
+
+    lila round-robin localhost:1337 example.com:80 127.0.0.1:7777
+
 ### Supported modes
 
 - *Round Robin* – Requests are distributed across the group of servers sequentially.
