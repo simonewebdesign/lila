@@ -2,17 +2,6 @@
 
 const net = require('net')
 const serverArgs = process.argv.slice(3)
-const serverURLs = serverArgs.map(toURL)
-
-function toURL(str) {
-  try {
-    return new URL(str)
-  } catch (err) {
-    console.error(`lila error: Invalid URL: ${str}`)
-    process.exit(1)
-  }
-}
-
 const numberOfServers = serverArgs.length
 let serverConnections = new Float32Array(numberOfServers)
 let serverIndex = 0
