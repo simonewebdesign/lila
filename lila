@@ -1,11 +1,10 @@
 #!/usr/bin/env node
+
 const net = require('net')
 const serverArgs = process.argv.slice(3)
-// console.log('[DEBUG!!]process.argv:',process.argv, process.argv.slice(3))
 const serverURLs = serverArgs.map(toURL)
 
 function toURL(str) {
-  // const s = str.trim()
   try {
     return new URL(str)
   } catch (err) {
@@ -23,88 +22,24 @@ const applyMode =
   modeArg === 'round-robin'
     ? (socket) => {
       socket.on('connect', () => {
-        console.log('ROUNDROBINASDASD connected!')
-        // serverConnections[idx] = serverConnections[idx] + 1
         serverIndex >= numberOfServers - 1
-        ? serverIndex = 0
-        : serverIndex++
+          ? serverIndex = 0
+          : serverIndex++
       })
-      // serverIndex >= numberOfServers - 1
-      //   ? serverIndex = 0
-      //   : serverIndex++
     }
     : (socket, idx) => { // least-connections
-      // setTimeout(() => {
-      //   serverArgs.forEach(({ host, port }, index) => {
-      //     const server = new net.Server({ })
-      //     server.getConnections((error, count) => {
-      //       if (error) {
-      //         console.error('lila getConnections error:', error)
-      //       } else {
-      //         serverConnections[index] = count
-      //       }
-      //     })
-      //   })
-      //   serverIndex = serverConnections.indexOf(
-      //     Math.min(...serverConnections)
-      //   )
-      // }, 200)
-
-
-      // setTimeout(() => {
-      //   serverURLs.forEach(({ hostname, port }, index) => {
-      //     if (index !== idx) return;
-      //     console.log('socket:', index, serverIndex, socket.address());
-      //     // const socket = net.connect(port, hostname)
-      //     // console.log('connecting to:', port, hostname)
-      //     socket.on('connect', () => {
-      //       console.log('ASDASDCONNECT')
-      //       serverConnections[index]++
-      //     })
-      //     socket.on('close', () => {
-      //       console.log('ASDASDCLOSE')
-      //       serverConnections[index]--
-      //     })
-      //     socket.on('error', (err) => {
-      //       console.log('ASDASDERROR', err);
-      //       serverConnections[index]--
-      //     })
-      //     socket.on('end', () => {
-      //       console.log('ASDASD END');
-      //       serverConnections[index]--
-      //     })
-      //   })
-      //   serverIndex = serverConnections.indexOf(
-      //     Math.min(...serverConnections)
-      //   )
-      //   console.log('serverConnections:',serverConnections, 'the serverIndex:', serverIndex);
-      // }, 200)
-
-
-      socket.on('connect', () => {
-        console.log('ASDASD connected!')
-        serverConnections[idx] = serverConnections[idx] + 1
-      })
-
-      socket.on('close', () => {
-        console.log('ASDASDCLOSE')
-        serverConnections[idx] = serverConnections[idx] - 1
-      })
-      // socket.on('error', (err) => {
-      //   console.log('ASDASDERROR', err);
-      //   serverConnections[idx] = serverConnections[idx] - 1
-      // })
-      // socket.on('end', () => {
-      //   console.log('ASDASD END');
-      //   serverConnections[idx] = serverConnections[idx] - 1
-      // })
+      socket
+        .on('connect', () => {
+          serverConnections[idx]++
+        })
+        .on('close', () => {
+          serverConnections[idx]--
+        })
 
       setTimeout(() => {
-        // serverConnections[idx] = serverConnections[idx] + 1
         serverIndex = serverConnections.indexOf(
           Math.min(...serverConnections)
         )
-        console.log('serverConnections:',serverConnections, 'the serverIndex:', serverIndex);
       }, 200)
     }
 
@@ -114,17 +49,10 @@ net
       console.error('lila socket error:', err)
     })
 
-    // const serverSocket = net.connect(8000 + serverIndex, '127.0.0.1', () => {
-    //   conn.pipe(serverSocket)
-    //   serverSocket.pipe(conn)
-    //   applyMode(serverSocket, serverIndex)
-    // })
-
     // TODO: this creates a new socket atm. See if you can reuse the same socket, by passing fd
     const serverSocket = new net.Socket()
     applyMode(serverSocket, serverIndex)
     serverSocket.connect(8000 + serverIndex, '127.0.0.1', () => {
-      console.log('CONNected.', serverIndex)
       conn.pipe(serverSocket)
       serverSocket.pipe(conn)
     })

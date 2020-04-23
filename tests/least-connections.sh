@@ -17,12 +17,12 @@ function connect {
     nc 127.0.0.1 4444 0<&0 1>out &
 }
 
-tests/spawnServers.js 3 > DEBUGspawnservers &
+tests/spawnServers.js 3 > /dev/null &
 
 ./lila least-connections \
     http://localhost:8000 \
     http://localhost:8001 \
-    http://localhost:8002 > DEBUGlila &
+    http://localhost:8002 > /dev/null &
 
 sleep 0.3
 

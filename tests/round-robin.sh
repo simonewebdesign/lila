@@ -23,7 +23,7 @@ tests/spawnServers.js > /dev/null &
     http://127.0.0.1:8003 \
     http://127.0.0.1:8004 \
     http://127.0.0.1:8005 \
-    http://127.0.0.1:8006 > DEBUGroundrobin &
+    http://127.0.0.1:8006 > /dev/null &
 
 sleep 0.3
 
