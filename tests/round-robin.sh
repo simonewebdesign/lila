@@ -15,15 +15,14 @@ function call {
 
 tests/spawnServers.js > /dev/null &
 
-# TODO: make sure it works with non-sequential ports!
 ./lila round-robin \
-    http://127.0.0.1:8000 \
-    http://127.0.0.1:8001 \
-    http://127.0.0.1:8002 \
-    http://127.0.0.1:8003 \
-    http://127.0.0.1:8004 \
-    http://127.0.0.1:8005 \
-    http://127.0.0.1:8006 > /dev/null &
+    127.0.0.1:8000 \
+    127.0.0.1:8001 \
+    127.0.0.1:8002 \
+    127.0.0.1:8003 \
+    127.0.0.1:8004 \
+    127.0.0.1:8005 \
+    127.0.0.1:8006 > /dev/null &
 
 sleep 0.3
 

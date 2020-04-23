@@ -20,9 +20,9 @@ function connect {
 tests/spawnServers.js 3 > /dev/null &
 
 ./lila least-connections \
-    http://localhost:8000 \
-    http://localhost:8001 \
-    http://localhost:8002 > /dev/null &
+    localhost:8000 \
+    localhost:8001 \
+    localhost:8002 > /dev/null &
 
 sleep 0.3
 

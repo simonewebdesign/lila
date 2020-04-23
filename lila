@@ -2,6 +2,22 @@
 
 const net = require('net')
 const serverArgs = process.argv.slice(3)
+const serverURLs = serverArgs.map(toURL)
+
+function toURL(str) {
+  const s = str.trim()
+  if (!s) {
+    console.error('lila error: URL not provided')
+    process.exit(1)
+  }
+  const [hostname, port] = s.split(':')
+  if (!hostname || !port) {
+    console.error('lila error: invalid URL:', s)
+    process.exit(2)
+  }
+  return { hostname, port }
+}
+
 const numberOfServers = serverArgs.length
 let serverConnections = new Float32Array(numberOfServers)
 let serverIndex = 0
@@ -41,7 +57,8 @@ net
     // TODO: this creates a new socket atm. See if you can reuse the same socket, by passing fd
     const serverSocket = new net.Socket()
     applyMode(serverSocket, serverIndex)
-    serverSocket.connect(8000 + serverIndex, '127.0.0.1', () => {
+    const { hostname, port } = serverURLs[serverIndex]
+    serverSocket.connect(port, hostname, () => {
       conn.pipe(serverSocket)
       serverSocket.pipe(conn)
     })
