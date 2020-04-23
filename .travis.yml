@@ -1,5 +1,0 @@
-os:
-  - linux
-  - osx
-
-script: tests/all.sh
