@@ -1,10 +1,10 @@
 class Lila < Formula
-  desc "The little load balancer"
+  desc "🌺 The little load balancer"
   homepage "https://github.com/simonewebdesign/lila"
-  url "https://github.com/simonewebdesign/lila/archive/0.1.0.tar.gz"
-  sha256 "a896a452f188d00c81ead20996a518c5b8fd1aed7a9eed908e5728e421499e46"
+  url "https://github.com/simonewebdesign/lila/archive/v1.0.0.tar.gz"
+  sha256 "8606ab91b07106d30487863db1247ef0e1b4f31cd3ec0e66acdc6fbd08e4032f"
 
   def install
-    system "make", "install", "PREFIX=#{prefix}"
+    bin.install "lila"
   end
 end
