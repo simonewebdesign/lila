@@ -50,12 +50,13 @@ const applyMode =
 
 net
   .createServer((conn) => {
-    conn.on('error', (err) => {
+    conn.on('error', err => {
       console.error('lila socket error:', err)
     })
 
-    // TODO: this creates a new socket atm. See if you can reuse the same socket, by passing fd
-    const serverSocket = new net.Socket()
+    const serverSocket = new net.Socket().on('error', err => {
+      console.error('lila server socket error:', err)
+    })
     applyMode(serverSocket, serverIndex)
     const { hostname, port } = serverURLs[serverIndex]
     serverSocket.connect(port, hostname, () => {
@@ -64,5 +65,5 @@ net
     })
   })
   .listen(4444, () => {
-    console.log('lila bound on http://127.0.0.1:4444')
+    console.log('lila accepting connections on port 4444')
   })
