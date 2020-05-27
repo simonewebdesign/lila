@@ -2,17 +2,25 @@
 
 [![Build Status](https://api.travis-ci.org/simonewebdesign/lila.svg?branch=master)](https://travis-ci.org/simonewebdesign/lila)
 
-lila is a tiny (1kb) load balancer.
+lila is a tiny (1kb) load balancer, fully end-to-end tested.
 
 ## Installation
 
 Node.js is the only prerequisite. Version v13.12+ is recommended, but it should work on v0.9.7 and later versions.
 
-### Homebrew (macOS)
+### npm
 
-    brew install https://raw.githubusercontent.com/simonewebdesign/lila/master/lila.rb
+    npm install -g lila
 
-### Manual installation (Windows, Linux)
+### yarn
+
+    yarn global add lila
+
+### Homebrew
+
+    brew install simonewebdesign/tap/lila
+
+### Manual installation (Windows, Linux, macOS)
 
 Run this command on a Bash shell to download the latest lila on the current directory and make it executable:
 
@@ -35,6 +43,6 @@ Example:
 
 ### Caveats
 
-- The mode needs to be passed as a shell argument, e.g. `round-robin` or `least-connections`
+- The mode needs to be passed as a shell argument, e.g. `round-robin` or `least-connections`.
 - The servers have to be provided in the format `hostname:port`, e.g. `example.com:80`. The protocol shouldn't be specified.
-- On a HTTP server, lila will respect the Keep-Alive timeout by reusing the same socket, unless the client ends the connection
+- On a HTTP server, lila will respect the Keep-Alive timeout by reusing the same socket, unless the client ends the connection.
