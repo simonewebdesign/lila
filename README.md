@@ -10,11 +10,11 @@ Node.js is the only prerequisite. Version v13.12+ is recommended, but it should 
 
 ### npm
 
-    npm install -g lila
+    npm install -g lila-lb
 
 ### yarn
 
-    yarn global add lila
+    yarn global add lila-lb
 
 ### Homebrew
 
