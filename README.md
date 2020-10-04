@@ -49,7 +49,7 @@ Example:
 
 ### Benchmarking
 
-lila is *fast*. Whilst there are several factors to consider when measuring the performance of a load balancer, such as network latency, worload, and what platform it's running on, quick benchmarking showed promising results.
+lila is *fast*. Whilst there are several factors to consider when measuring the performance of a load balancer, such as network latency, workload, and what platform it's running on, quick benchmarking showed promising results.
 
 My setup is a MacBook Pro 2.3 GHz Intel Core i7, 16 GB DDR3.
 
@@ -76,7 +76,7 @@ Transfer rate:          123.66 [Kbytes/sec] received
 'Hey' provided much better results, yielding **22877 requests/sec** (by reusing TCP connections between different HTTP requests):
 
 ```
-hey -c 7 -z 5s http://localhost:4444/
+$ hey -c 7 -z 5s http://localhost:4444/
 
 Summary:
   Total:	5.0003 secs
