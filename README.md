@@ -6,7 +6,7 @@ lila is a tiny (1kb) load balancer, fully end-to-end tested.
 
 ## Installation
 
-Node.js is the only prerequisite. Version v13.12+ is recommended, but it should work on v0.9.7 and later versions.
+Node.js (>= 0.9.7) is the only prerequisite.
 
 ### npm
 
